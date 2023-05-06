@@ -1,14 +1,16 @@
 #!/bin/bash
 
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
 then
     echo "Missing arguments.  Did you run 'make verify KANIKO_IMAGE_TAR=/path/to/kaniko_image_tar IMAGE_TAG=image_tag ENCLAVE=https://example.com/attestation'?" >&2
     exit 1
 fi
-repro_image="$1"
-enclave="$2"
+kaniko_image_tar="$1"
+repro_image="$2"
+enclave="$3"
+
+docker load -i "$(kaniko_image_tar)" # import the docker image from the tar onto this host
 echo "[+] Building reproducible reference image.  This may take a while." >&2
-#repro_image=$(cd "$repository" && make --no-print-directory docker 2>/dev/null)
 echo "$repro_image"
 cat > Dockerfile <<EOF
 FROM public.ecr.aws/amazonlinux/amazonlinux:2

@@ -2,14 +2,14 @@
 
 if [ $# -ne 2 ]
 then
-    echo "Missing arguments.  Did you run 'make verify CODE=/path/to/code ENCLAVE=https://example.com/attestation'?" >&2
+    echo "Missing arguments.  Did you run 'make verify KANIKO_IMAGE_TAR=/path/to/kaniko_image_tar IMAGE_TAG=image_tag ENCLAVE=https://example.com/attestation'?" >&2
     exit 1
 fi
-repository="$1"
+repro_image="$1"
 enclave="$2"
 echo "[+] Building reproducible reference image.  This may take a while." >&2
-repro_image=$(cd "$repository" && make --no-print-directory docker 2>/dev/null)
-
+#repro_image=$(cd "$repository" && make --no-print-directory docker 2>/dev/null)
+echo "$repro_image"
 cat > Dockerfile <<EOF
 FROM public.ecr.aws/amazonlinux/amazonlinux:2
 
